@@ -1,13 +1,14 @@
-const modelParams = {
-    flipHorizontal: true,   
-    imageScaleFactor: 0.7, 
-    maxNumBoxes: 6,        
-    iouThreshold: 0.5,      
-    scoreThreshold: 0.80,    
-  }
-  
 
-navigator.getUserMedia = 
+const modelParams = {
+    flipHorizontal: true,
+    imageScaleFactor: 0.7,
+    maxNumBoxes: 6,
+    iouThreshold: 0.5,
+    scoreThreshold: 0.80,
+  }
+
+
+navigator.getUserMedia =
     navigator.getUserMedia ||
     navigator.webkitGetUserMedia ||
     navigator.mozGetUserMedia ||
@@ -23,7 +24,7 @@ let model;
 handTrack.startVideo(video).then(status => {
     if(status){
         navigator.getUserMedia(
-            {video: {}}, 
+            {video: {}},
             stream => {
                 video.srcObject = stream;
                 setInterval(runDetection, 1000)
