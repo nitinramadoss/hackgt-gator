@@ -59,6 +59,25 @@ function runDetection() {
     });
 }
 
+function drawRectangle(coords) {
+    var canvas = document.getElementById('canvas');
+    if (canvas.getContext) {
+      context.fillRect(coords[0], coords[1], coords[2], coords[3]);
+    }
+}
+
+function drawText(coords) {
+    var text = document.getElementById("inputBox").value;
+    var ctx = document.getElementById('canvas').getContext('2d');
+    ctx.font = '48px serif';
+
+    if (text != undefined) {
+        ctx.fillText(text, coords[0], coords[1] + 0.5*coords[3]);
+    } else {
+        ctx.fillText("", coords[0], coords[1]);
+    }
+  }
+ 
 
 handTrack.load(modelParams).then(lmodel => {
     model = lmodel;
@@ -67,3 +86,4 @@ handTrack.load(modelParams).then(lmodel => {
 trackButton.addEventListener("click", function(){
     toggleVideo();
 });
+
