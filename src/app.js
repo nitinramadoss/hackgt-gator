@@ -87,10 +87,13 @@ function drawRectangle(options) {
 
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
+        context.fillStyle = '#FFFF00'
       context.fillRect(coords[0], coords[1], coords[2], coords[3]);
       setTimeout(() => {
-        context.fillStyle = '#00FFFFFF'
-      }, 1000/30)
+        context.globalAlpha = 0;
+        context.fillStyle = "blue"; 
+        context.fillRect(coords[0], coords[1], coords[2], coords[3]);
+      }, 1)
     }
 }
 
