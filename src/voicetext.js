@@ -17,8 +17,13 @@ function  checkRequestCanvas(text) {
   {
     console.log(text);
     if(text.includes("canvass")) {
-      if (currentSpeech.includes("canvass write") || currentSpeech.includes("canvass right")) {
+      if (currentSpeech.includes("canvass right")) {
         let writeText = currentSpeech.split("canvass right")[1];
+        boardAction = {command: "write", text: writeText};
+        console.log(boardAction);
+      }
+      else if (currentSpeech.includes("canvass write")) {
+        let writeText = currentSpeech.split("canvass write")[1];
         boardAction = {command: "write", text: writeText};
         console.log(boardAction);
       }
@@ -31,14 +36,20 @@ function  checkRequestCanvas(text) {
       boardAction = {command: "write", text: writeText};
     }
     else*/
-    else if (text.includes("canvas")) {
-      if (currentSpeech.includes("write") || currentSpeech.includes("right")) {
+    else if(text.includes("canvas")) {
+      if (currentSpeech.includes("canvas right")) {
         let writeText = currentSpeech.split("canvas right")[1];
+        boardAction = {command: "write", text: writeText};
+        console.log(boardAction);
+      }
+      else if (currentSpeech.includes("canvas write")) {
+        let writeText = currentSpeech.split("canvas write")[1];
         boardAction = {command: "write", text: writeText};
         console.log(boardAction);
       }
       else
         boardAction = textNLP(text.split("canvas")[1]);
+
     }
     currentSpeech = "";
     preventTimeoutCall = false;
@@ -128,17 +139,29 @@ document.addEventListener("DOMContentLoaded", function () {
           clearTimeout(timer);
           console.log('Final Phrase: ' + currentSpeech);
           if (currentSpeech.includes("canvass")) {
-            if (currentSpeech.includes("canvass write") || currentSpeech.includes("canvass right")) {
+            if (currentSpeech.includes("canvass right")) {
               let writeText = currentSpeech.split("canvass right")[1];
               boardAction = {command: "write", text: writeText};
             }
+            else if (currentSpeech.includes("canvass write")) {
+              if (currentSpeech.includes("canvass write")) {
+                let writeText = currentSpeech.split("canvass write")[1];
+                boardAction = {command: "write", text: writeText};
+              }
+            }
             else
-              boardAction = textNLP(currentSpeech.split("canvas")[1]);
+              boardAction = textNLP(currentSpeech.split("canvass")[1]);
           }
           else if (currentSpeech.includes("canvas")) {
-            if (currentSpeech.includes("canvas write") || currentSpeech.includes("canvas right")) {
+            if (currentSpeech.includes("canvas right")) {
               let writeText = currentSpeech.split("canvas right")[1];
               boardAction = {command: "write", text: writeText};
+            }
+            else if (currentSpeech.includes("canvas write")) {
+              if (currentSpeech.includes("canvas write")) {
+                let writeText = currentSpeech.split("canvas write")[1];
+                boardAction = {command: "write", text: writeText};
+              }
             }
             else
               boardAction = textNLP(currentSpeech.split("canvas")[1]);
