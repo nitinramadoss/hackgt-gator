@@ -48,7 +48,7 @@ function runDetection() {
             requestAnimationFrame(runDetection);     
         }
 
-        if(predictions !== undefined)
+        if(predictions[0] !== undefined)
             draw(predictions[0].bbox)
     });
 }
