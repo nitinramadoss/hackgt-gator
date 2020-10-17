@@ -1,5 +1,8 @@
 console.log("textNLP running");
 async function textNLP(text) {
+    if (text == null) {
+      return;
+    }
     var data;
     var REQ_URL = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/caefedaf-04c0-452f-97d2-6ef49d961261?q='
     var PARAMS = '&verbose=true'
@@ -29,19 +32,40 @@ function chooseIntent(data, intent) {
         case 'DrawSquare':
             command.command = 'draw';
             command.shape = 'square';
-            // check opacity
+            command.opacity = 'transparent';
+            for(let i = 0; i < data['entities'].length; i++) {
+                if(data['entities'][i]['type'] === 'Opacity') {
+                    command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+            }
+            command.opacity = command.opacity.includes('50') ? '50' : command.opacity;
             return command;
             break;
         case 'DrawCicle':
             command.command = 'draw';
-            command.shape = 'circle'
-            // check opacity
+            command.shape = 'circle';
+            command.opacity = 'transparent';
+            for(let i = 0; i < data['entities'].length; i++) {
+                if(data['entities'][i]['type'] === 'Opacity') {
+                    command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+            }
+            command.opacity = command.opacity.includes('50') ? '50' : command.opacity;
             return command;
             break;
         case 'DrawHexagon':
             command.command = 'draw';
             command.shape = 'hexagon';
-            // check opacity
+            command.opacity = 'transparent';
+            for(let i = 0; i < data['entities'].length; i++) {
+                if(data['entities'][i]['type'] === 'Opacity') {
+                    command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+            }
+            command.opacity = command.opacity.includes('50') ? '50' : command.opacity;
             return command;
             break;
         case 'DrawLine':
