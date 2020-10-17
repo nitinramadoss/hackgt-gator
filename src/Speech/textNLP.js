@@ -27,28 +27,38 @@ async function textNLP(text) {
 }
 
 function chooseIntent(data, intent) {
-    var command = {'command': '', 'shape': '', 'opacity': '', 'angle': ''};
+    var command = {'command': '', 'shape': '', 'opacity': '', 'angle': '', 'color': ''};
     switch(intent) {
         case 'DrawSquare':
             command.command = 'draw';
             command.shape = 'square';
             command.opacity = 'transparent';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
             command.opacity = command.opacity.includes('50') ? '50' : command.opacity;
             return command;
             break;
-        case 'DrawCircle':
+        case 'DrawCicle':
             command.command = 'draw';
             command.shape = 'circle';
             command.opacity = 'transparent';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -59,9 +69,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'hexagon';
             command.opacity = 'transparent';
+            command.color = 'black'
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -72,9 +87,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'line';
             command.angle = '0';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Angle') {
                     command.angle = data['entities'][i]['entity'].split(' ')[0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -84,9 +104,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'arrow';
             command.angle = '0';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Angle') {
                     command.angle = data['entities'][i]['entity'].split(' ')[0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
