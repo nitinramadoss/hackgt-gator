@@ -3,6 +3,14 @@ async function textNLP(text) {
     if (text == null || text == undefined || text == "") {
       return;
     }
+
+    if (text.includes('begin drawing') || text.includes('stop drawing')) {
+      let commandType = 'drawing';
+      commandType = text.includes('begin drawing') ? 'begin drawing' : 'stop drawing';
+      let command = {'command': commandType};
+      return command;
+    }
+
     var data;
     var REQ_URL = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/caefedaf-04c0-452f-97d2-6ef49d961261?q='
     var PARAMS = '&verbose=true'
