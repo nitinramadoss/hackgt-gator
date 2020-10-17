@@ -3,9 +3,22 @@ async function textNLP(text) {
     if (text == null || text == undefined || text == "") {
       return;
     }
-    var data;
-    var REQ_URL = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/caefedaf-04c0-452f-97d2-6ef49d961261?q='
-    var PARAMS = '&verbose=true'
+    if (text.includes('place')) {
+      let commandType = 'place';
+      let command = {'command': commandType};
+      return command;
+
+    }
+    if (text.includes('begin drawing') || text.includes('stop drawing')) {
+      let commandType = 'drawing';
+      commandType = text.includes('begin drawing') ? 'begin drawing' : 'stop drawing';
+      let command = {'command': commandType};
+      return command;
+    }
+
+    let data;
+    let REQ_URL = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/caefedaf-04c0-452f-97d2-6ef49d961261?q='
+    let PARAMS = '&verbose=true'
     console.log("text is " + text);
     const myHeaders = new Headers({'Ocp-Apim-Subscription-Key': '7cdaa44f3fc64ad0966d02ee77603153'});
     data = await fetch(REQ_URL + text + PARAMS, {
@@ -19,23 +32,28 @@ async function textNLP(text) {
     console.log(data);
     console.log(typeof data);
     console.log(data.topScoringIntent);
-    var intent = data.topScoringIntent.intent;
+    let intent = data.topScoringIntent.intent;
     console.log(intent);
-    var textNLPcommand = chooseIntent(data, intent);
+    let textNLPcommand = chooseIntent(data, intent);
     console.log(textNLPcommand);
     return textNLPcommand;
 }
 
 function chooseIntent(data, intent) {
-    var command = {'command': '', 'shape': '', 'opacity': '', 'angle': ''};
+    let command = {'command': '', 'shape': '', 'opacity': '', 'angle': '', 'color': ''};
     switch(intent) {
         case 'DrawSquare':
             command.command = 'draw';
             command.shape = 'square';
             command.opacity = 'transparent';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -46,9 +64,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'circle';
             command.opacity = 'transparent';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -59,9 +82,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'hexagon';
             command.opacity = 'transparent';
+            command.color = 'black'
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -72,9 +100,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'line';
             command.angle = '0';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Angle') {
                     command.angle = data['entities'][i]['entity'].split(' ')[0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -84,9 +117,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'arrow';
             command.angle = '0';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Angle') {
                     command.angle = data['entities'][i]['entity'].split(' ')[0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
