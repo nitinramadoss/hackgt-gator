@@ -1,3 +1,5 @@
+import draw from './draw.js'
+
 const modelParams = {
     flipHorizontal: true,  
     maxNumBoxes: 20,      
@@ -7,8 +9,6 @@ const modelParams = {
 
 let isVideo = false;
 let model = null;
-
-
 
 const video = document.getElementById("myvideo");
 const canvas = document.getElementById("canvas");
@@ -52,6 +52,8 @@ function runDetection() {
             drawText(predictions[0].bbox)
     });
 }
+<<<<<<< HEAD
+=======
 
 
 function drawRectangle(coords) {
@@ -72,14 +74,15 @@ function drawText(coords) {
         ctx.fillText("", coords[0], coords[1]);
     }
   }
+>>>>>>> 9ab3ee15d9cbd0b9182468beca4ff5d3d6ee3a52
  
 
-function runDetectionImage(img) {
-    model.detect(img).then(predictions => {
-        console.log("Predictions: ", predictions);
-        model.renderPredictions(predictions, canvas, context, img);
-    });
-}
+// function runDetectionImage(img) {
+//     model.detect(img).then(predictions => {
+//         console.log("Predictions: ", predictions);
+//         model.renderPredictions(predictions, canvas, context, img);
+//     });
+// }
 
 
 handTrack.load(modelParams).then(lmodel => {
