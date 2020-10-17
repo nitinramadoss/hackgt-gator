@@ -1,5 +1,4 @@
-# hackgt-gator
-VR Board
+# VR Board
 
 Goal: Reimaging virtual education, providing educators a virtual whiteboard to make teaching easier (gets rid of the inconveniences of screen sharing paint applications when drawing out concepts). Future plans for this concept is to integrate into zoom classroom sessions.
 
