@@ -16,7 +16,10 @@ function  checkRequestCanvas(text) {
   if (text.includes("canvas") && !preventTimeoutCall)
   {
     console.log(text);
-    boardAction = textNLP(text.split("canvas")[1])
+    if(text.includes("canvass"))
+      boardAction = textNLP(text.split("canvass")[1]);
+    else
+      boardAction = textNLP(text.split("canvas")[1]);
     currentSpeech = "";
     preventTimeoutCall = false;
   }
@@ -70,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var timer;
     console.log(37);
     recognizer.recognizing = (s, e) => {
+        phraseDiv.innerHTML = e.result.text;
         console.log(`RECOGNIZING: Text=${e.result.text}`);
         console.log(typeof e.result.text)
         // try {
@@ -109,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log("NLP RESULT");
           console.log(boardAction);
         }
-
 
       };
     recognizer.sessionStarted = (s, e) => {
