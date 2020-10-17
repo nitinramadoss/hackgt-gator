@@ -1,6 +1,6 @@
 console.log("textNLP running");
 async function textNLP(text) {
-    if (text == null) {
+    if (text == null || text == undefined || text == "") {
       return;
     }
     var data;
