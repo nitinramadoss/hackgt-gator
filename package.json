@@ -1,0 +1,22 @@
+{
+  "name": "hackgt-gator",
+  "version": "1.0.0",
+  "description": "whiteboard from speech with hand recognition",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nitinramadoss/hackgt-gator.git"
+  },
+  "author": "Sohil Kollipara, Adithya, Nitin Ramodoss, Raghu Radhakrishnan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nitinramadoss/hackgt-gator/issues"
+  },
+  "homepage": "https://github.com/nitinramadoss/hackgt-gator#readme",
+  "dependencies": {
+    "microsoft-cognitiveservices-speech-sdk": "^1.13.1"
+  }
+}
