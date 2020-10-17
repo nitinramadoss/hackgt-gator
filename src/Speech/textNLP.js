@@ -42,7 +42,7 @@ function chooseIntent(data, intent) {
             command.opacity = command.opacity.includes('50') ? '50' : command.opacity;
             return command;
             break;
-        case 'DrawCicle':
+        case 'DrawCircle':
             command.command = 'draw';
             command.shape = 'circle';
             command.opacity = 'transparent';
