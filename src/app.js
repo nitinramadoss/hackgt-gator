@@ -8,8 +8,6 @@ const modelParams = {
 let isVideo = false;
 let model = null;
 
-
-
 const video = document.getElementById("myvideo");
 const canvas = document.getElementById("canvas");
 let trackButton = document.getElementById("trackbutton");
