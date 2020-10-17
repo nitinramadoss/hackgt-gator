@@ -16,10 +16,30 @@ function  checkRequestCanvas(text) {
   if (text.includes("canvas") && !preventTimeoutCall)
   {
     console.log(text);
-    if(text.includes("canvass"))
-      boardAction = textNLP(text.split("canvass")[1]);
-    else
-      boardAction = textNLP(text.split("canvas")[1]);
+    if(text.includes("canvass")) {
+      if (currentSpeech.includes("canvass write") || currentSpeech.includes("canvass right")) {
+        let writeText = currentSpeech.split("canvass right")[1];
+        boardAction = {command: "write", text: writeText};
+        console.log(boardAction);
+      }
+      else
+        boardAction = textNLP(text.split("canvass")[1]);
+
+    }
+    /*if (currentSpeech.includes("write")) {
+      let writeText = currentSpeech.split("canvass write")[1];
+      boardAction = {command: "write", text: writeText};
+    }
+    else*/
+    else if (text.includes("canvas")) {
+      if (currentSpeech.includes("write") || currentSpeech.includes("right")) {
+        let writeText = currentSpeech.split("canvas right")[1];
+        boardAction = {command: "write", text: writeText};
+        console.log(boardAction);
+      }
+      else
+        boardAction = textNLP(text.split("canvas")[1]);
+    }
     currentSpeech = "";
     preventTimeoutCall = false;
   }
@@ -107,8 +127,22 @@ document.addEventListener("DOMContentLoaded", function () {
           preventTimeoutCall = false;
           clearTimeout(timer);
           console.log('Final Phrase: ' + currentSpeech);
-          if (currentSpeech.includes("canvas"))
-            boardAction = textNLP(currentSpeech.split("canvas")[1]);
+          if (currentSpeech.includes("canvass")) {
+            if (currentSpeech.includes("canvass write") || currentSpeech.includes("canvass right")) {
+              let writeText = currentSpeech.split("canvass right")[1];
+              boardAction = {command: "write", text: writeText};
+            }
+            else
+              boardAction = textNLP(currentSpeech.split("canvas")[1]);
+          }
+          else if (currentSpeech.includes("canvas")) {
+            if (currentSpeech.includes("canvas write") || currentSpeech.includes("canvas right")) {
+              let writeText = currentSpeech.split("canvas right")[1];
+              boardAction = {command: "write", text: writeText};
+            }
+            else
+              boardAction = textNLP(currentSpeech.split("canvas")[1]);
+          }
           currentSpeech = e.result.text;
           console.log("NLP RESULT");
           console.log(boardAction);
