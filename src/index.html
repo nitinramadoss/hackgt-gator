@@ -14,8 +14,17 @@
         <textarea id="phraseDiv"></textarea>
         <div class="outer">
             <div class="inner">
-                <video id="myvideo" class="videobox canvasbox" autoplay="autoplay"></video>
+                <video id="myvideo" class="canvasbox" autoplay="autoplay"  onplay="resize_canvas(this)"></video>
                 <canvas id="canvas" class="canvas"></canvas>
+                <script>
+                  function resize_canvas(element) {
+                    var w = element.offsetWidth;
+                    var h = element.offsetHeight;
+                    var cv = document.getElementById("canvas");
+                    cv.width = w;
+                    cv.height = h;
+                  }
+                </script>
             </div>
         </div>
         <script src="Speech/microsoft.cognitiveservices.speech.sdk.bundle.js"></script>

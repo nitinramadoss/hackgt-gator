@@ -1,7 +1,7 @@
 //import draw from './draw.js'
 
 const modelParams = {
-    flipHorizontal: true,
+    flipHorizontal: false,
     maxNumBoxes: 20,
     iouThreshold: 0.5,
     scoreThreshold: 0.90
@@ -61,16 +61,16 @@ async function runDetection() {
 
             let action = await getAction();
             console.log(action);
-            if (action.command == 'draw') {
+            if (action !== undefined && action.command == 'draw') {
                 var shape = action.shape;
-
+                
                 if (shape == 'square') {
                       currentCommand = "drawRectangle";
                 } else if (shape == 'hexagon')  {
                       currentCommand = "drawText";
                 }
             }
-
+            currentCommand = "drawRectangle" // delete this
             if (currentCommand == "drawRectangle") {
               console.log(currentCommand);
               drawRectangle(options);
@@ -88,6 +88,9 @@ function drawRectangle(options) {
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
       context.fillRect(coords[0], coords[1], coords[2], coords[3]);
+      setTimeout(() => {
+        context.fillStyle = '#00FFFFFF'
+      }, 1000/30)
     }
 }
 

@@ -16,7 +16,7 @@ img {
 .outer {
     border: 1px solid red;
     height: 100px;
-    width: 100px%;
+    width: 100px;
 }
 
 .inner {
@@ -27,24 +27,23 @@ img {
 
 .canvasbox {
     position: absolute;
-    top: 0px;
-    left: 0px;
-    border-radius: 3px;
-    margin-right: 10px;
-    width:100px;
-    height:100px;
-    border-bottom: 3px solid #0063FF;
-    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030;
+    top: 380px;
+    left: 470px;
+    /* border-radius: 3px; */
+    /* margin-right: 10px; */
+    /* width:500px;
+    height:300px; */
+    /* border-bottom: 3px solid #0063FF; */
+    /* box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030; */
 
 }
 
 .canvas {
     position: absolute;
-    left: 0px;
-    top: 0px;
-    opacity: 0;
-    width: 100px;
-    height: 100px;
+    left: 470px;
+    top: 380px;
+    /* width: 500px;
+    height: 300px; */
 }
 
 .flexgrid {
