@@ -1,3 +1,5 @@
+import draw from './draw.js'
+
 const modelParams = {
     flipHorizontal: true,  
     maxNumBoxes: 20,      
@@ -7,8 +9,6 @@ const modelParams = {
 
 let isVideo = false;
 let model = null;
-
-
 
 const video = document.getElementById("myvideo");
 const canvas = document.getElementById("canvas");
@@ -52,23 +52,14 @@ function runDetection() {
             draw(predictions[0].bbox)
     });
 }
-
-function draw(coords) {
-    var canvas = document.getElementById('canvas');
-    if (canvas.getContext) {
-  
-      context.clearRect(45, 45, 60, 60);
-      context.strokeRect(coords[0], coords[1], coords[2] - 50, coords[3] - 50);
-    }
-}
  
 
-function runDetectionImage(img) {
-    model.detect(img).then(predictions => {
-        console.log("Predictions: ", predictions);
-        model.renderPredictions(predictions, canvas, context, img);
-    });
-}
+// function runDetectionImage(img) {
+//     model.detect(img).then(predictions => {
+//         console.log("Predictions: ", predictions);
+//         model.renderPredictions(predictions, canvas, context, img);
+//     });
+// }
 
 
 handTrack.load(modelParams).then(lmodel => {
