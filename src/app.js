@@ -15,6 +15,10 @@ const canvas = document.getElementById("canvas");
 let trackButton = document.getElementById("trackbutton");
 const context = canvas.getContext("2d");
 
+let latestOptions
+let shapes = []
+
+
 async function getAction() {
   var action = await boardAction;
   return action;
@@ -42,11 +46,13 @@ function startVideo() {
     });
 }
 
-var currentCommand = "";
+var currentCommand 
 
 async function runDetection() {
     model.detect(video).then(async (predictions) => {
         model.renderPredictions(predictions, canvas, context, video);
+
+        drawPersist()
         
         if (isVideo) {
             requestAnimationFrame(runDetection);     
@@ -55,33 +61,39 @@ async function runDetection() {
         if(predictions[0] !== undefined) {
             let action = await getAction();
 
-            options = {
-                bbox: predictions[0].bbox,
-                type: 'rectangle',
-                angle: 0,
-                text: "",
-                opacity: 1,
+            
+            
+            if(action !== undefined) {
+                let options;
+
+                if (action.command === 'draw') {
+                    var shape = action.shape;
+                    options = action
+                    options.bbox = predictions[0].bbox
+
+                  if (shape === 'square') {
+                    currentCommand = "drawRectangle";
+                  } else if (shape === 'circle')  {    
+                    currentCommand = "drawCircle";
+                  } else if (shape === 'arrow')  { 
+                    currentCommand = "drawArrow";
+                  } else if (shape === 'line')  {                     
+                    currentCommand = "drawLine";
+                  }
+
+                  latestOptions = options
+            
+                } else if (action.command == 'write') {
+                    options.shape = 'text'
+                    options.text = action.text;
+                    options.bbox = predictions[0].bbox
+
+                    currentCommand = "drawWrite";
+                } else if (action.command === 'place') {
+                    shapes.push(latestOptions)
+                }
             }
             
-            if (action.command == 'draw') {
-                var shape = action.shape;
-
-              if (shape == 'square') {
-                //options.opacity = action.opacity;  
-                currentCommand = "drawRectangle";
-              } else if (shape == 'circle')  {   
-                //options.opacity = parseInt(action.opacity);        
-                currentCommand = "drawCircle";
-              } else if (shape == 'arrow')  {         
-                currentCommand = "drawArrow";
-              } else if (shape == 'line')  {         
-                currentCommand = "drawLine";
-              }
-            } else if (action.command == 'write') {
-                options.text = action.text;
-                currentCommand = "drawWrite";
-            }
-
           if (currentCommand == "drawRectangle") {
             drawRectangle(options);
           } else if (currentCommand == "drawText") {
@@ -90,7 +102,7 @@ async function runDetection() {
             drawCircle(options);  
           } else if (currentCommand == "drawArrow") {
             drawArrow(options);  
-          }
+          } 
         }
     });
 }
@@ -147,6 +159,20 @@ function drawArrow(options) {
     context.stroke();
 }
  
+
+function drawPersist() {
+    shapes.forEach(options => {
+        if (options.shape == "rectangle") {
+            drawRectangle(options);
+          } else if (options.shape == "text") {
+            drawText(options);  
+          } else if (options.shape == "circle") {
+            drawCircle(options);  
+          } else if (options.shape == "arrow") {
+            drawArrow(options);  
+          }
+    })
+}
 
 handTrack.load(modelParams).then(lmodel => {
     model = lmodel;
