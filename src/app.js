@@ -49,9 +49,32 @@ function runDetection() {
         }
 
         if(predictions[0] !== undefined)
-            draw(predictions[0].bbox)
+            drawText(predictions[0].bbox)
     });
 }
+<<<<<<< HEAD
+=======
+
+
+function drawRectangle(coords) {
+    var canvas = document.getElementById('canvas');
+    if (canvas.getContext) {
+      context.fillRect(coords[0], coords[1], coords[2], coords[3]);
+    }
+}
+
+function drawText(coords) {
+    var text = document.getElementById("inputBox").value;
+    var ctx = document.getElementById('canvas').getContext('2d');
+    ctx.font = '48px serif';
+
+    if (text != undefined) {
+        ctx.fillText(text, coords[0], coords[1] + 0.5*coords[3]);
+    } else {
+        ctx.fillText("", coords[0], coords[1]);
+    }
+  }
+>>>>>>> 9ab3ee15d9cbd0b9182468beca4ff5d3d6ee3a52
  
 
 // function runDetectionImage(img) {
