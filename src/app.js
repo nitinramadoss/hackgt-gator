@@ -15,7 +15,7 @@ const canvas = document.getElementById("canvas");
 let trackButton = document.getElementById("trackbutton");
 const context = canvas.getContext("2d");
 
-let latestOptions
+let latestOptions = {}
 let shapes = []
 
 
@@ -53,6 +53,7 @@ async function runDetection() {
         model.renderPredictions(predictions, canvas, context, video);
 
         drawPersist()
+        console.log('Latest Options', latestOptions)
         
         if (isVideo) {
             requestAnimationFrame(runDetection);     
@@ -61,11 +62,8 @@ async function runDetection() {
         if(predictions[0] !== undefined) {
             let action = await getAction();
 
-            
-            
+            let options
             if(action !== undefined) {
-                let options;
-
                 if (action.command === 'draw') {
                     var shape = action.shape;
                     options = action
@@ -90,18 +88,21 @@ async function runDetection() {
 
                     currentCommand = "drawWrite";
                 } else if (action.command === 'place') {
+                    console.log(shapes)
                     shapes.push(latestOptions)
                 }
             }
-            
+            latestOptions.bbox = predictions[0].bbox
           if (currentCommand == "drawRectangle") {
-            drawRectangle(options);
+            drawRectangle(latestOptions);
+            latestOptions.bbox = [0,0,50, 50]
+            drawRectangle(latestOptions);
           } else if (currentCommand == "drawText") {
-            drawText(options);  
+            drawText(latestOptions);  
           } else if (currentCommand == "drawCircle") {
-            drawCircle(options);  
+            drawCircle(latestOptions);  
           } else if (currentCommand == "drawArrow") {
-            drawArrow(options);  
+            drawArrow(latestOptions);  
           } 
         }
     });
