@@ -49,7 +49,6 @@ function  checkRequestCanvas(text) {
       }
       else
         boardAction = textNLP(text.split("canvas")[1]);
-
     }
     currentSpeech = "";
     preventTimeoutCall = false;
@@ -130,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
           timer = setTimeout(function() {
           checkRequestCanvas(currentSpeech);
           console.log("After setting timer: " + preventTimeoutCall);
-        }, 5000);
+        }, 3000);
             console.log(currentSpeech);
         }
         else
