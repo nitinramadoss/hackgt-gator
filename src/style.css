@@ -1,7 +1,12 @@
 body {
-    padding: 20px;
+    padding: 0px;
 }
-
+img {
+  max-width: 100%;
+}
+video {
+  display: none;
+}
 .block {
     display: block;
 }
@@ -13,8 +18,8 @@ body {
 .canvasbox {
     border-radius: 3px;
     margin-right: 10px;
-    width: 450px;
-    height: 338px;
+    width:100%;
+    height:100%;
     border-bottom: 3px solid #0063FF;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030;
 
@@ -22,4 +27,27 @@ body {
 
 .canvas {
     opacity: 0.5;
+    width: 100%;
+}
+
+.flexgrid{
+  margin-left: auto;
+  margin-right: auto;
+  display:flex;
+  flex-direction: column;
+}
+
+.flexrow{
+  display: flex;
+  flex-direction: row;
+}
+.tile{
+  width: 33%;
+  border-bottom: 3px solid #0063FF;
+ border: 3px solid #8AC007;
+ box-shadow: 0 2px 3px 0 rgba(92, 90, 221, 0.2), 0 4px 10px 0 #00000030;
+}
+
+.tile-middle {
+  width: 35%;
 }

@@ -11,25 +11,57 @@
     </head>
     <body>
         <button id="startRecognizeOnceAsyncButton">Start recognition</button>
-        <textarea id="phraseDiv" style="display: inline-block;width:500px;height:200px"></textarea>
+        <textarea id="phraseDiv"></textarea>
         <video id="video"></video>
         <canvas id="canvas"></canvas>
-        <script src="Speech/microsoft.cognitiveservices.speech.sdk.bundle.js"></script>;
+        <script src="Speech/microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
         <script src="speechRequestAuthorization.js"></script>
         <script src="Speech/textNLP.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"></script>
         <script src="app.js"></script>
         <script src="voicetext.js"></script>
-      
+
         <button  id="trackbutton" class="bx--btn bx--btn--secondary" type="button">
             Begin Lecture
         </button>
         <label for="txtbox">Add Text:</label>
         <input type="text" id="inputBox" name="inputBox"><br><br>
 
-        <video class="videobox canvasbox" autoplay="autoplay" id="myvideo"></video>
+  <div class = "flexgrid">
+    <div class = "flexrow">
+      <div class = "tile">
+        <figure class="gallery__item gallery__item--3">
+                    <img src="adityacopy.jpg" alt="Gallery image 3" class="gallery__img">
+                </figure>
+      </div>
+      <div class = "tile">
+        <figure class="gallery__item gallery__item--3">
+                    <img src="adityacopy.jpg" alt="Gallery image 3" class="gallery__img">
+                </figure>
+      </div>
+      <div class = "tile">
+        <figure class="gallery__item gallery__item--3">
+                    <img src="adityacopy.jpg" alt="Gallery image 3" class="gallery__img">
+                </figure>
+      </div>
+    </div>
+    <div class = "flexrow">
+      <div class = "tile">
+        <figure class="gallery__item gallery__item--3">
+                    <img src="adityacopy.jpg" alt="Gallery image 3" class="gallery__img">
+                </figure>
+      </div>
+      <div class = "tile">
         <canvas id="canvas" class="border canvasbox"></canvas>
+      </div>
+      <div class = "tile">
+        <figure class="gallery__item gallery__item--3">
+                    <img src="adityacopy.jpg" alt="Gallery image 3" class="gallery__img">
+                </figure>
+      </div>
+    </div>
 
-        <script type="module" src="app.js"></script>
+    <video type="hidden" class="videobox canvasbox" autoplay="autoplay" id="myvideo"></video>
+
         </body>
 </html>
