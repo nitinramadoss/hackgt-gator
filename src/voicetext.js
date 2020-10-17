@@ -6,7 +6,25 @@ var startRecognizeOnceAsyncButton;
 var subscriptionKey, subscriptionKeyBool, serviceRegion;
 var SpeechSDK;
 var recognizer;
+var currentSpeech = "";
+var boardAction;
+var preventTimeoutCall = false;
 
+function  checkRequestCanvas(text) {
+  console.log("In Check Request Canvas");
+  console.log("Checking values: " + text + preventTimeoutCall);
+  if (text.includes("canvas") && !preventTimeoutCall)
+  {
+    console.log(text);
+    boardAction = textNLP(text.split("canvas")[1])
+    currentSpeech = "";
+    preventTimeoutCall = false;
+  }
+  else {
+    preventTimeoutCall = false;
+  }
+  console.log("End of CRC: " + preventTimeoutCall)
+}
 document.addEventListener("DOMContentLoaded", function () {
 
   startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
@@ -49,11 +67,50 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(35);
     recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
     recognizer.startContinuousRecognitionAsync();
-
+    var timer;
     console.log(37);
     recognizer.recognizing = (s, e) => {
         console.log(`RECOGNIZING: Text=${e.result.text}`);
-        console.log(e);
+        console.log(typeof e.result.text)
+        // try {
+        //   preventTimeoutCall = true;
+        //   clearTimeout(timer);
+        //   console.log(preventTimeoutCall);
+        //
+        // } catch (e) {
+        //   console.log("timer not initialized")
+        // }
+        if (e.result.text.length+3 > currentSpeech.length)
+        {
+          currentSpeech = e.result.text;
+          try {
+            preventTimeoutCall = true;
+            // clearTimeout(timer);
+            console.log(preventTimeoutCall);
+
+          } catch (e) {
+            console.log("timer not initialized")
+          }
+          //preventTimeoutCall = false;
+          timer = setTimeout(function() {
+          checkRequestCanvas(currentSpeech);
+          console.log("After setting timer: " + preventTimeoutCall);
+        }, 5000);
+            console.log(currentSpeech);
+        }
+        else
+        {
+          preventTimeoutCall = false;
+          clearTimeout(timer);
+          console.log('Final Phrase: ' + currentSpeech);
+          if (currentSpeech.includes("canvas"))
+            boardAction = textNLP(currentSpeech.split("canvas")[1]);
+          currentSpeech = e.result.text;
+          console.log("NLP RESULT");
+          console.log(boardAction);
+        }
+
+
       };
     recognizer.sessionStarted = (s, e) => {
       console.log("session started");
@@ -87,36 +144,11 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("\n    Session stopped event.");
       recognizer.stopContinuousRecognitionAsync();
     };
-    /*recognizer.recognizeOnceAsync(
-      function (result) {
-        startRecognizeOnceAsyncButton.disabled = false;
-        phraseDiv.innerHTML += result.text;
-
-        window.console.log(result);
-        console.log(43);
-        recognizer.close();
-        recognizer = undefined;
-        console.log(47);
-        recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
-
-        startRecognizeOnceAsyncButton.disabled = true;
-      },
-      function (err) {
-        startRecognizeOnceAsyncButton.disabled = false;
-        phraseDiv.innerHTML += err;
-        window.console.log(err);
-
-        recognizer.close();
-        recognizer = undefined;
-      });
-  });*/
 
   if (!!window.SpeechSDK) {
     SpeechSDK = window.SpeechSDK;
     startRecognizeOnceAsyncButton.disabled = false;
 
-//    document.getElementById('content').style.display = 'block';
-//    document.getElementById('warning').style.display = 'none';
 
     // in case we have a function for getting an authorization token, call it.
     if (typeof RequestAuthorizationToken === "function") {
