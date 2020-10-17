@@ -4,7 +4,7 @@ const modelParams = {
     flipHorizontal: true,  
     maxNumBoxes: 20,      
     iouThreshold: 0.5,     
-    scoreThreshold: 0.6,    
+    scoreThreshold: 0.90    
 }
 
 let isVideo = false;
@@ -48,8 +48,14 @@ function runDetection() {
             requestAnimationFrame(runDetection);     
         }
 
-        if(predictions[0] !== undefined)
-            drawText(predictions[0].bbox)
+        if(predictions[0] !== undefined) {
+            const options = {
+                bbox: predictions[0].bbox,
+                type: 'rectangle',
+                opacity: 'shaded',
+            }
+            draw(options)
+        }
     });
 }
 
@@ -72,7 +78,6 @@ function drawText(coords) {
     }
   }
  
-
 
 handTrack.load(modelParams).then(lmodel => {
     model = lmodel;
