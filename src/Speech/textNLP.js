@@ -6,6 +6,7 @@ async function textNLP(text) {
     if (text.includes('place')) {
       let commandType = 'place';
       let command = {'command': commandType};
+      console.log(command)
       return command;
 
     }
