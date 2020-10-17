@@ -1,4 +1,4 @@
-import draw from './draw.js'
+//import draw from './draw.js'
 
 const modelParams = {
     flipHorizontal: true,  
@@ -41,7 +41,6 @@ function startVideo() {
 
 function runDetection() {
     model.detect(video).then(predictions => {
-        console.log("Predictions: ", predictions);
         model.renderPredictions(predictions, canvas, context, video);
         
         if (isVideo) {
@@ -54,19 +53,41 @@ function runDetection() {
                 type: 'rectangle',
                 opacity: 'shaded',
             }
-            draw(options)
+
+           
+            if (boardActionStack != null) {
+             let action = boardActionStack[boardActionStack.length-1];
+             console.log(action.shape);
+            }
+            
+
+            if (action.command = 'draw') {
+              switch(action.shape) {
+                  case square:
+                    drawRectangle(options)
+                    break;
+                  case hexagon:
+                    drawText(options)
+                    break;
+                  }
+              }
+            
         }
     });
 }
 
-function drawRectangle(coords) {
+function drawRectangle(options) {
+    coords = options.bbox;
+
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
       context.fillRect(coords[0], coords[1], coords[2], coords[3]);
     }
 }
 
-function drawText(coords) {
+function drawText(options) {
+    coords = options.bbox;
+
     var text = document.getElementById("inputBox").value;
     var ctx = document.getElementById('canvas').getContext('2d');
     ctx.font = '48px serif';
@@ -86,4 +107,5 @@ handTrack.load(modelParams).then(lmodel => {
 trackButton.addEventListener("click", function(){
     toggleVideo();
 });
+
 

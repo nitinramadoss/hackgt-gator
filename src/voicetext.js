@@ -10,6 +10,8 @@ var currentSpeech = "";
 var boardAction;
 var preventTimeoutCall = false;
 
+var boardActionStack=new Array();
+
 function  checkRequestCanvas(text) {
   console.log("In Check Request Canvas");
   console.log("Checking values: " + text + preventTimeoutCall);
@@ -20,6 +22,8 @@ function  checkRequestCanvas(text) {
       boardAction = textNLP(text.split("canvass")[1]);
     else
       boardAction = textNLP(text.split("canvas")[1]);
+
+    boardActionStack.push(boardAction);
     currentSpeech = "";
     preventTimeoutCall = false;
   }
@@ -100,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
           checkRequestCanvas(currentSpeech);
           console.log("After setting timer: " + preventTimeoutCall);
         }, 5000);
-            console.log(currentSpeech);
+            //console.log(currentSpeech);
         }
         else
         {
@@ -112,6 +116,11 @@ document.addEventListener("DOMContentLoaded", function () {
           currentSpeech = e.result.text;
           console.log("NLP RESULT");
           console.log(boardAction);
+          
+          if (boardAction != undefined) {
+            boardActionStack.push(boardAction);         
+          }
+
         }
 
       };
