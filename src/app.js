@@ -14,6 +14,7 @@ const video = document.getElementById("myvideo");
 const canvas = document.getElementById("canvas");
 let trackButton = document.getElementById("trackbutton");
 const context = canvas.getContext("2d");
+context.globalAlpha = 0.7;
 
 
 let latestOptions = {}
@@ -87,7 +88,9 @@ async function runDetection() {
                     drawCircle(latestOptions);  
                   } else if (currentCommand == "drawArrow") {
                     drawArrow(latestOptions);  
-                  } 
+                  } else if (currentCommand == 'drawLine') {
+                      drawLine(latestOptions)
+                  }
 
                   placed = false
             
@@ -118,6 +121,7 @@ function drawRectangle(options) {
 
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
+      context.fillStyle = options.color  
       context.globalAlpha = 0.5;
       context.fillRect(coords[0], coords[1], coords[2], coords[3]);
     }
@@ -127,9 +131,7 @@ function drawText(options) {
     var coords = options.bbox;
     context.globalAlpha = 1;
 
-    console.log(options)
     var text = options.text;
-    console.log(text)
     var ctx = document.getElementById('canvas').getContext('2d');
     ctx.font = '48px serif';
 
@@ -146,8 +148,8 @@ function drawCircle(options) {
 
     if (canvas.getContext) {
         context.beginPath();
-        context.arc(coords[0], coords[1], 0.5*coords[2], 0, 2 * Math.PI, false);
-        context.fillStyle = 'green';
+        context.arc(coords[0] + 0.5*coords[2], coords[1]+0.5*coords[3], coords[3] / 3, 0, 2 * Math.PI, false);
+        context.fillStyle = options.color;
         context.fill();
     }
 }
@@ -166,7 +168,20 @@ function drawArrow(options) {
     context.lineTo(dx + coords[0] - headlen * Math.cos(angle - Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle - Math.PI / 6));
     context.moveTo(dx + coords[0], dy + coords[1]);
     context.lineTo(dx + coords[0] - headlen * Math.cos(angle + Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle + Math.PI / 6));
-    context.lineWidth = 5;
+    context.lineWidth = 10;
+    context.strokeStyle = options.color
+    context.stroke();
+    
+}
+
+function drawLine(options) {
+    let coords = options.bbox;
+    context.beginPath()
+    context.moveTo(coords[0], coords[1])
+    context.lineTo(coords[0] + 0.5 * coords[2], coords[1] + 0.5 * coords[3])
+    context.lineWidth = 10;
+    context.strokeStyle = options.color
+
     context.stroke();
 }
  
@@ -181,6 +196,8 @@ function drawPersist() {
             drawCircle(options);  
           } else if (options.shape == "arrow") {
             drawArrow(options);  
+          } else if (options.shape == "line") {
+            drawLine(options)
           }
     })
 }
