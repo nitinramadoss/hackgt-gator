@@ -1,10 +1,10 @@
 //import draw from './draw.js'
 
 const modelParams = {
-    flipHorizontal: true,  
-    maxNumBoxes: 20,      
-    iouThreshold: 0.5,     
-    scoreThreshold: 0.90    
+    flipHorizontal: true,
+    maxNumBoxes: 20,
+    iouThreshold: 0.5,
+    scoreThreshold: 0.90
 }
 
 let isVideo = false;
@@ -24,7 +24,7 @@ function toggleVideo() {
     if (!isVideo) {
         console.log("Starting video");
         startVideo();
-    } else {       
+    } else {
         handTrack.stopVideo(video)
         isVideo = false;
     }
@@ -46,10 +46,10 @@ var currentCommand = "";
 
 async function runDetection() {
     model.detect(video).then(async (predictions) => {
-        model.renderPredictions(predictions, canvas, context, video);
-        
+        //model.renderPredictions(predictions, canvas, context, video);
+
         if (isVideo) {
-            requestAnimationFrame(runDetection);     
+            requestAnimationFrame(runDetection);
         }
 
         if(predictions[0] !== undefined) {
@@ -66,17 +66,17 @@ async function runDetection() {
 
                 if (shape == 'square') {
                       currentCommand = "drawRectangle";
-                } else if (shape == 'hexagon')  {         
+                } else if (shape == 'hexagon')  {
                       currentCommand = "drawText";
                 }
-            }  
+            }
 
             if (currentCommand == "drawRectangle") {
               console.log(currentCommand);
               drawRectangle(options);
             } else if (currentCommand == "drawText") {
               console.log(currentCommand);
-              drawText(options);  
+              drawText(options);
             }
         }
     });
@@ -104,7 +104,7 @@ function drawText(options) {
         ctx.fillText("", coords[0], coords[1]);
     }
   }
- 
+
 
 handTrack.load(modelParams).then(lmodel => {
     model = lmodel;
@@ -113,5 +113,3 @@ handTrack.load(modelParams).then(lmodel => {
 trackButton.addEventListener("click", function(){
     toggleVideo();
 });
-
-

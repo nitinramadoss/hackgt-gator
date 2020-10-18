@@ -12,8 +12,12 @@
     <body>
         <button id="startRecognizeOnceAsyncButton">Start recognition</button>
         <textarea id="phraseDiv"></textarea>
-        <video id="video"></video>
-        <canvas id="canvas"></canvas>
+        <div class="outer">
+            <div class="inner">
+                <video id="myvideo" class="videobox canvasbox" autoplay="autoplay"></video>
+                <canvas id="canvas" class="canvas"></canvas>
+            </div>
+        </div>
         <script src="Speech/microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
         <script src="speechRequestAuthorization.js"></script>
         <script src="Speech/textNLP.js"></script>
@@ -21,7 +25,7 @@
         <script src="voicetext.js"></script>
 
         <script type="module" src="app.js"></script>
-      
+
         <button  id="trackbutton" class="bx--btn bx--btn--secondary" type="button">
             Begin Lecture
         </button>
@@ -62,7 +66,7 @@
       </div>
     </div>
 
-    <video type="hidden" class="videobox canvasbox" autoplay="autoplay" id="myvideo"></video>
+    <!--video type="hidden" class="videobox canvasbox" autoplay="autoplay" id="myvideo"></video> -->
 
         </body>
 </html>
