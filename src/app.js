@@ -109,25 +109,27 @@ async function runDetection() {
                     console.log(latestOptions.bbox)
 
                     placed = true
-                }
-                //  else if (action.command === 'delete') {
-                //   let dist = 30000000.0
-                //   let handPos = [predictions[0].bbox[0], predictions[0].bbox[1]]
-                //   let tempDist
-                //   let minIndex
-                //   let i = 0
-                //   shapes.forEach(option => {
-                //     tempDist = (handPos[0] - option.bbox[0]) * (handPos[0] - option.bbox[0]) + (handPos[1] - option.bbox[1]) * (handPos[1] - option.bbox[1])
+                } else if (action.command === 'delete') {
+                    shapes = []
+                    placed = false
 
-                //     if(tempDist < dist) {
-                //       minIndex = i
-                //       dist = tempDist
-                //     }
-                //     i++
-                //   })
-                //   shapes.splice(minIndex, 1)
-                //   boardAction = null
-                // }
+                  // let dist = 30000000.0
+                  // let handPos = [predictions[0].bbox[0], predictions[0].bbox[1]]
+                  // let tempDist
+                  // let minIndex
+                  // let i = 0
+                  // shapes.forEach(option => {
+                  //   tempDist = (handPos[0] - option.bbox[0]) * (handPos[0] - option.bbox[0]) + (handPos[1] - option.bbox[1]) * (handPos[1] - option.bbox[1])
+
+                  //   if(tempDist < dist) {
+                  //     minIndex = i
+                  //     dist = tempDist
+                  //   }
+                  //   i++
+                  // })
+                  // shapes.splice(minIndex, 1)
+                  // boardAction = null
+                }
 
                 
             }
@@ -174,7 +176,7 @@ function drawCircle(options) {
 
     if (canvas.getContext) {
         context.beginPath();
-        context.arc(coords[0] + 0.5*coords[2], coords[1]+0.5*coords[3], coords[3] / 4, 0, 2 * Math.PI, false);
+        context.arc(coords[0] + 0.5*coords[2], coords[1]+0.5*coords[3], coords[3] / 2, 0, 2 * Math.PI, false);
 
         if(options.opacity === 'solid') {
           context.fillStyle = options.color;
