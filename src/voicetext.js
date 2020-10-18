@@ -7,7 +7,7 @@ var subscriptionKey, subscriptionKeyBool, serviceRegion;
 var SpeechSDK;
 var recognizer;
 var currentSpeech = "";
-var boardAction;
+var boardAction; 
 var preventTimeoutCall = false;
 
 var boardActionStack=new Array();

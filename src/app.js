@@ -15,6 +15,10 @@ const canvas = document.getElementById("canvas");
 let trackButton = document.getElementById("trackbutton");
 const context = canvas.getContext("2d");
 
+async function getAction() {
+  var action = await boardAction;
+  return action;
+}
 
 function toggleVideo() {
     if (!isVideo) {
@@ -38,9 +42,10 @@ function startVideo() {
     });
 }
 
+var currentCommand = "";
 
-function runDetection() {
-    model.detect(video).then(predictions => {
+async function runDetection() {
+    model.detect(video).then(async (predictions) => {
         model.renderPredictions(predictions, canvas, context, video);
         
         if (isVideo) {
@@ -54,30 +59,31 @@ function runDetection() {
                 opacity: 'shaded',
             }
 
-           
-            if (boardActionStack != null) {
-             let action = boardActionStack[boardActionStack.length-1];
-             console.log(action.shape);
-            }
-            
+            let action = await getAction();
+            console.log(action);
+            if (action.command == 'draw') {
+                var shape = action.shape;
 
-            if (action.command = 'draw') {
-              switch(action.shape) {
-                  case square:
-                    drawRectangle(options)
-                    break;
-                  case hexagon:
-                    drawText(options)
-                    break;
-                  }
-              }
-            
+                if (shape == 'square') {
+                      currentCommand = "drawRectangle";
+                } else if (shape == 'hexagon')  {         
+                      currentCommand = "drawText";
+                }
+            }  
+
+            if (currentCommand == "drawRectangle") {
+              console.log(currentCommand);
+              drawRectangle(options);
+            } else if (currentCommand == "drawText") {
+              console.log(currentCommand);
+              drawText(options);  
+            }
         }
     });
 }
 
 function drawRectangle(options) {
-    coords = options.bbox;
+    var coords = options.bbox;
 
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
@@ -86,7 +92,7 @@ function drawRectangle(options) {
 }
 
 function drawText(options) {
-    coords = options.bbox;
+    var coords = options.bbox;
 
     var text = document.getElementById("inputBox").value;
     var ctx = document.getElementById('canvas').getContext('2d');
