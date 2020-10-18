@@ -16,12 +16,9 @@ async function RequestAuthorizationToken () {
     var result = await fetch('https://eastus.api.cognitive.microsoft.com/sts/v1.0/issuetoken', requestOptions)
       .then(response => response.text())
       .catch(error => console.log('error', error));
-    console.log(result);
     var token = JSON.parse(atob(result.split('.')[1]));
-    console.log(token);
     serviceRegion = token.region;
     authorizationToken = result;
-    console.log(authorizationToken);
     subscriptionKeyBool = true;
     subscriptionKey = 'using authorization token (hit F5 to refresh)';
     console.log('Got an authorization token: ' + token);
