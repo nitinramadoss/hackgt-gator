@@ -1,4 +1,4 @@
-import draw from './draw.js'
+//import draw from './draw.js'
 
 const modelParams = {
     flipHorizontal: true,  
@@ -15,6 +15,10 @@ const canvas = document.getElementById("canvas");
 let trackButton = document.getElementById("trackbutton");
 const context = canvas.getContext("2d");
 
+async function getAction() {
+  var action = await boardAction;
+  return action;
+}
 
 function toggleVideo() {
     if (!isVideo) {
@@ -38,10 +42,10 @@ function startVideo() {
     });
 }
 
+var currentCommand = "";
 
-function runDetection() {
-    model.detect(video).then(predictions => {
-        console.log("Predictions: ", predictions);
+async function runDetection() {
+    model.detect(video).then(async (predictions) => {
         model.renderPredictions(predictions, canvas, context, video);
         
         if (isVideo) {
@@ -54,19 +58,42 @@ function runDetection() {
                 type: 'rectangle',
                 opacity: 'shaded',
             }
-            draw(options)
+
+            let action = await getAction();
+            console.log(action);
+            if (action.command == 'draw') {
+                var shape = action.shape;
+
+                if (shape == 'square') {
+                      currentCommand = "drawRectangle";
+                } else if (shape == 'hexagon')  {         
+                      currentCommand = "drawText";
+                }
+            }  
+
+            if (currentCommand == "drawRectangle") {
+              console.log(currentCommand);
+              drawRectangle(options);
+            } else if (currentCommand == "drawText") {
+              console.log(currentCommand);
+              drawText(options);  
+            }
         }
     });
 }
 
-function drawRectangle(coords) {
+function drawRectangle(options) {
+    var coords = options.bbox;
+
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
       context.fillRect(coords[0], coords[1], coords[2], coords[3]);
     }
 }
 
-function drawText(coords) {
+function drawText(options) {
+    var coords = options.bbox;
+
     var text = document.getElementById("inputBox").value;
     var ctx = document.getElementById('canvas').getContext('2d');
     ctx.font = '48px serif';
@@ -86,4 +113,5 @@ handTrack.load(modelParams).then(lmodel => {
 trackButton.addEventListener("click", function(){
     toggleVideo();
 });
+
 

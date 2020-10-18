@@ -7,8 +7,10 @@ var subscriptionKey, subscriptionKeyBool, serviceRegion;
 var SpeechSDK;
 var recognizer;
 var currentSpeech = "";
-var boardAction;
+var boardAction; 
 var preventTimeoutCall = false;
+
+var boardActionStack=new Array();
 
 function  checkRequestCanvas(text) {
   console.log("In Check Request Canvas");
@@ -16,6 +18,7 @@ function  checkRequestCanvas(text) {
   if (text.includes("canvas") && !preventTimeoutCall)
   {
     console.log(text);
+
     if(text.includes("canvass")) {
       if (currentSpeech.includes("canvass right")) {
         let writeText = currentSpeech.split("canvass right")[1];
@@ -168,6 +171,11 @@ document.addEventListener("DOMContentLoaded", function () {
           currentSpeech = e.result.text;
           console.log("NLP RESULT");
           console.log(boardAction);
+          
+          if (boardAction != undefined) {
+            boardActionStack.push(boardAction);         
+          }
+
         }
 
       };
