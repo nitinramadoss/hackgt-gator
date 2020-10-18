@@ -110,6 +110,24 @@ async function runDetection() {
 
                     placed = true
                 }
+                //  else if (action.command === 'delete') {
+                //   let dist = 30000000.0
+                //   let handPos = [predictions[0].bbox[0], predictions[0].bbox[1]]
+                //   let tempDist
+                //   let minIndex
+                //   let i = 0
+                //   shapes.forEach(option => {
+                //     tempDist = (handPos[0] - option.bbox[0]) * (handPos[0] - option.bbox[0]) + (handPos[1] - option.bbox[1]) * (handPos[1] - option.bbox[1])
+
+                //     if(tempDist < dist) {
+                //       minIndex = i
+                //       dist = tempDist
+                //     }
+                //     i++
+                //   })
+                //   shapes.splice(minIndex, 1)
+                //   boardAction = null
+                // }
 
                 
             }
@@ -141,6 +159,7 @@ function drawText(options) {
     var text = options.text;
 
     context.font = '48px serif';
+    context.fillStyle = 'black'
 
     if (text != undefined) {
         context.fillText(text, coords[0], coords[1] + 0.5*coords[3]);
@@ -155,7 +174,7 @@ function drawCircle(options) {
 
     if (canvas.getContext) {
         context.beginPath();
-        context.arc(coords[0] + 0.5*coords[2], coords[1]+0.5*coords[3], coords[3] / 3, 0, 2 * Math.PI, false);
+        context.arc(coords[0] + 0.5*coords[2], coords[1]+0.5*coords[3], coords[3] / 4, 0, 2 * Math.PI, false);
 
         if(options.opacity === 'solid') {
           context.fillStyle = options.color;
@@ -169,34 +188,47 @@ function drawCircle(options) {
 }
 
 function drawArrow(options) {
-    let coords = options.bbox;
-    context.globalAlpha = 0.7;
+  let coords = options.bbox;
+  context.globalAlpha = 0.7;
 
-    var headlen = 10; 
-    var dx = coords[2];
-    var dy = coords[3];
-    var angle = Math.atan2(dy, dx);
-    context.beginPath();
-    context.moveTo(coords[0], coords[1]);
-    context.lineTo(dx + coords[0], dy + coords[1]);
-    context.lineTo(dx + coords[0] - headlen * Math.cos(angle - Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle - Math.PI / 6));
-    context.moveTo(dx + coords[0], dy + coords[1]);
-    context.lineTo(dx + coords[0] - headlen * Math.cos(angle + Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle + Math.PI / 6));
-    context.lineWidth = 10;
-    context.strokeStyle = options.color
-    context.stroke();
-    
+  let scale = 0.5;
+  
+  let dx = scale * coords[2];
+  let dy = scale * coords[3];
+  let angle2 = options.angle * Math.PI / 180;
+  let new_dy = dy - (dx * Math.tan(angle2));
+  
+  var headlen = 10; 
+
+  var angle = Math.atan2(dy, dx);
+  context.beginPath();
+  context.moveTo(coords[0], coords[1] + dy);
+  context.lineTo(dx + coords[0], new_dy + coords[1]);
+  context.lineTo(dx + coords[0] - headlen * Math.cos(angle - Math.PI / 6), new_dy + coords[1] - headlen * Math.sin(angle - Math.PI / 6));
+  context.moveTo(dx + coords[0], new_dy + coords[1]);
+  context.lineTo(dx + coords[0] - headlen * Math.cos(angle + Math.PI / 6), new_dy + coords[1] - headlen * Math.sin(angle + Math.PI / 6));
+  context.lineWidth = 10;
+  context.strokeStyle = options.color
+  context.stroke();
+  
 }
 
 function drawLine(options) {
-    let coords = options.bbox;
-    context.beginPath()
-    context.moveTo(coords[0], coords[1])
-    context.lineTo(coords[0] + 0.5 * coords[2], coords[1] + 0.5 * coords[3])
-    context.lineWidth = 10;
-    context.strokeStyle = options.color
+  let coords = options.bbox;
+  let scale = 0.5;
 
-    context.stroke();
+  let dx = scale * coords[2];
+  let dy = scale * coords[3];
+  let angle = options.angle * Math.PI / 180;
+  let new_dy = dy - (dx * Math.tan(angle));
+
+  context.beginPath()
+  context.moveTo(coords[0], dy + coords[1])
+  context.lineTo(coords[0] + dx, coords[1] + new_dy)
+  context.lineWidth = 10;
+  context.strokeStyle = options.color
+
+  context.stroke();
 }
  
 

@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
         timer = setTimeout(function () {
           checkRequestCanvas(currentSpeech);
           console.log('After setting timer: ' + preventTimeoutCall);
-        }, 3000);
+        }, 2000);
         console.log(currentSpeech);
       } else {
         preventTimeoutCall = false;
