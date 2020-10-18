@@ -53,7 +53,6 @@ async function runDetection() {
         model.renderPredictions(predictions, canvas, context, video);
 
         drawPersist()
-        console.log('Latest Options', latestOptions)
         
         if (isVideo) {
             requestAnimationFrame(runDetection);     
@@ -62,11 +61,11 @@ async function runDetection() {
         if(predictions[0] !== undefined) {
             let action = await getAction();
 
-            let options
+            let options = null;
             if(action !== undefined && action !== null) {
+                options = action
                 if (action.command === 'draw') {
                     var shape = action.shape;
-                    options = action
                     options.bbox = predictions[0].bbox
 
                   if (shape === 'square') {
@@ -78,8 +77,19 @@ async function runDetection() {
                   } else if (shape === 'line')  {                     
                     currentCommand = "drawLine";
                   }
-
                   latestOptions = options
+                  
+                  latestOptions.bbox = predictions[0].bbox
+                  if (currentCommand == "drawRectangle") {
+                    drawRectangle(latestOptions);
+                  } else if (currentCommand == "drawText") {
+                    drawText(latestOptions);  
+                  } else if (currentCommand == "drawCircle") {
+                    drawCircle(latestOptions);  
+                  } else if (currentCommand == "drawArrow") {
+                    drawArrow(latestOptions);  
+                  } 
+
                   placed = false
             
                 } else if (action.command == 'write') {
@@ -93,23 +103,12 @@ async function runDetection() {
                     shapes.push(latestOptions)
                     console.log(shapes)
                     console.log(latestOptions.bbox)
-                    //alert('I reached place')
 
                     placed = true
                 }
 
                 
             }
-            latestOptions.bbox = predictions[0].bbox
-          if (currentCommand == "drawRectangle") {
-            drawRectangle(latestOptions);
-          } else if (currentCommand == "drawText") {
-            drawText(latestOptions);  
-          } else if (currentCommand == "drawCircle") {
-            drawCircle(latestOptions);  
-          } else if (currentCommand == "drawArrow") {
-            drawArrow(latestOptions);  
-          } 
         }
     });
 }
@@ -169,7 +168,7 @@ function drawArrow(options) {
 
 function drawPersist() {
     shapes.forEach(options => {
-        if (options.shape == "rectangle") {
+        if (options.shape == "square") {
             drawRectangle(options);
           } else if (options.shape == "text") {
             drawText(options);  
