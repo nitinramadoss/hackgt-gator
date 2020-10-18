@@ -1,4 +1,4 @@
-//import draw from './draw.js'
+import draw from './draw.js'
 
 const modelParams = {
     flipHorizontal: true,  
@@ -14,6 +14,10 @@ const video = document.getElementById("myvideo");
 const canvas = document.getElementById("canvas");
 let trackButton = document.getElementById("trackbutton");
 const context = canvas.getContext("2d");
+
+let latestOptions = {}
+let shapes = []
+
 
 async function getAction() {
   var action = await boardAction;
@@ -42,42 +46,64 @@ function startVideo() {
     });
 }
 
-var currentCommand = "";
+var currentCommand 
 
 async function runDetection() {
     model.detect(video).then(async (predictions) => {
         model.renderPredictions(predictions, canvas, context, video);
+
+        drawPersist()
+        console.log('Latest Options', latestOptions)
         
         if (isVideo) {
             requestAnimationFrame(runDetection);     
         }
 
         if(predictions[0] !== undefined) {
-            const options = {
-                bbox: predictions[0].bbox,
-                type: 'rectangle',
-                opacity: 'shaded',
-            }
-
             let action = await getAction();
-            console.log(action);
-            if (action.command == 'draw') {
-                var shape = action.shape;
 
-                if (shape == 'square') {
-                      currentCommand = "drawRectangle";
-                } else if (shape == 'hexagon')  {         
-                      currentCommand = "drawText";
+            let options
+            if(action !== undefined) {
+                if (action.command === 'draw') {
+                    var shape = action.shape;
+                    options = action
+                    options.bbox = predictions[0].bbox
+
+                  if (shape === 'square') {
+                    currentCommand = "drawRectangle";
+                  } else if (shape === 'circle')  {    
+                    currentCommand = "drawCircle";
+                  } else if (shape === 'arrow')  { 
+                    currentCommand = "drawArrow";
+                  } else if (shape === 'line')  {                     
+                    currentCommand = "drawLine";
+                  }
+
+                  latestOptions = options
+            
+                } else if (action.command == 'write') {
+                    options.shape = 'text'
+                    options.text = action.text;
+                    options.bbox = predictions[0].bbox
+
+                    currentCommand = "drawWrite";
+                } else if (action.command === 'place') {
+                    console.log(shapes)
+                    shapes.push(latestOptions)
                 }
-            }  
-
-            if (currentCommand == "drawRectangle") {
-              console.log(currentCommand);
-              drawRectangle(options);
-            } else if (currentCommand == "drawText") {
-              console.log(currentCommand);
-              drawText(options);  
             }
+            latestOptions.bbox = predictions[0].bbox
+          if (currentCommand == "drawRectangle") {
+            drawRectangle(latestOptions);
+            latestOptions.bbox = [0,0,50, 50]
+            drawRectangle(latestOptions);
+          } else if (currentCommand == "drawText") {
+            drawText(latestOptions);  
+          } else if (currentCommand == "drawCircle") {
+            drawCircle(latestOptions);  
+          } else if (currentCommand == "drawArrow") {
+            drawArrow(latestOptions);  
+          } 
         }
     });
 }
@@ -87,6 +113,7 @@ function drawRectangle(options) {
 
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
+      context.globalAlpha = options.opacity;
       context.fillRect(coords[0], coords[1], coords[2], coords[3]);
     }
 }
@@ -103,8 +130,50 @@ function drawText(options) {
     } else {
         ctx.fillText("", coords[0], coords[1]);
     }
-  }
+}
+
+function drawCircle(options) {
+    let coords = options.bbox;
+
+    if (canvas.getContext) {
+        context.beginPath();
+        context.arc(coords[0], coords[1], 0.5*coords[2], 0, 2 * Math.PI, false);
+        context.fillStyle = 'green';
+        context.fill();
+    }
+}
+
+function drawArrow(options) {
+    let coords = options.bbox;
+
+    var headlen = 10; 
+    var dx = coords[2];
+    var dy = coords[3];
+    var angle = Math.atan2(dy, dx);
+    context.beginPath();
+    context.moveTo(coords[0], coords[1]);
+    context.lineTo(dx + coords[0], dy + coords[1]);
+    context.lineTo(dx + coords[0] - headlen * Math.cos(angle - Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle - Math.PI / 6));
+    context.moveTo(dx + coords[0], dy + coords[1]);
+    context.lineTo(dx + coords[0] - headlen * Math.cos(angle + Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle + Math.PI / 6));
+    context.lineWidth = 10;
+    context.stroke();
+}
  
+
+function drawPersist() {
+    shapes.forEach(options => {
+        if (options.shape == "rectangle") {
+            drawRectangle(options);
+          } else if (options.shape == "text") {
+            drawText(options);  
+          } else if (options.shape == "circle") {
+            drawCircle(options);  
+          } else if (options.shape == "arrow") {
+            drawArrow(options);  
+          }
+    })
+}
 
 handTrack.load(modelParams).then(lmodel => {
     model = lmodel;
