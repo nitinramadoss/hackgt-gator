@@ -17,7 +17,7 @@ const context = canvas.getContext("2d");
 
 let latestOptions = {}
 let shapes = []
-
+let placed = false
 
 async function getAction() {
   var action = await boardAction;
@@ -63,7 +63,7 @@ async function runDetection() {
             let action = await getAction();
 
             let options
-            if(action !== undefined) {
+            if(action !== undefined && action !== null) {
                 if (action.command === 'draw') {
                     var shape = action.shape;
                     options = action
@@ -80,6 +80,7 @@ async function runDetection() {
                   }
 
                   latestOptions = options
+                  placed = false
             
                 } else if (action.command == 'write') {
                     options.shape = 'text'
@@ -87,15 +88,20 @@ async function runDetection() {
                     options.bbox = predictions[0].bbox
 
                     currentCommand = "drawWrite";
-                } else if (action.command === 'place') {
-                    console.log(shapes)
+                    placed = false
+                } else if (action.command === 'place' && !placed) {
                     shapes.push(latestOptions)
+                    console.log(shapes)
+                    console.log(latestOptions.bbox)
+                    //alert('I reached place')
+
+                    placed = true
                 }
+
+                
             }
             latestOptions.bbox = predictions[0].bbox
           if (currentCommand == "drawRectangle") {
-            drawRectangle(latestOptions);
-            latestOptions.bbox = [0,0,50, 50]
             drawRectangle(latestOptions);
           } else if (currentCommand == "drawText") {
             drawText(latestOptions);  
