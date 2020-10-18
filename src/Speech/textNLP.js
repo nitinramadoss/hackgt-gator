@@ -51,11 +51,9 @@ function chooseIntent(data, intent) {
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
-                    break;
                 }
                 if(data['entities'][i]['type'] === 'Color') {
                     command.color = data['entities'][i]['resolution']['values'][0];
-                    break;
                 }
             }
             command.opacity = command.opacity.includes('50') ? '50' : command.opacity;
@@ -69,11 +67,9 @@ function chooseIntent(data, intent) {
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
-                    break;
                 }
                 if(data['entities'][i]['type'] === 'Color') {
                     command.color = data['entities'][i]['resolution']['values'][0];
-                    break;
                 }
             }
             command.opacity = command.opacity.includes('50') ? '50' : command.opacity;
@@ -87,11 +83,11 @@ function chooseIntent(data, intent) {
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
-                    break;
+
                 }
                 if(data['entities'][i]['type'] === 'Color') {
                     command.color = data['entities'][i]['resolution']['values'][0];
-                    break;
+
                 }
             }
             command.opacity = command.opacity.includes('50') ? '50' : command.opacity;
@@ -105,11 +101,9 @@ function chooseIntent(data, intent) {
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Angle') {
                     command.angle = data['entities'][i]['entity'].split(' ')[0];
-                    break;
                 }
                 if(data['entities'][i]['type'] === 'Color') {
                     command.color = data['entities'][i]['resolution']['values'][0];
-                    break;
                 }
             }
             return command;
@@ -122,11 +116,9 @@ function chooseIntent(data, intent) {
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Angle') {
                     command.angle = data['entities'][i]['entity'].split(' ')[0];
-                    break;
                 }
                 if(data['entities'][i]['type'] === 'Color') {
                     command.color = data['entities'][i]['resolution']['values'][0];
-                    break;
                 }
             }
             return command;
