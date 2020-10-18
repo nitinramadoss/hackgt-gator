@@ -10,9 +10,17 @@ How it works:
 Canvas Board uses Microsoft speech-to-text to accept verbal commands for drawing. The user, the educator, can say basic commands such as "Canvas write <input text said by user>, to render a textbox with the input, and Canvas <draw shape name>, to render a specific shape, to the screen. NLP through Microsoft LUIS-AI converts inputs into actions for Canvas Board to run. Using handtrack.js, Canvas Board allows the user to drag and resize these visual elements across their screen and build diagrams using the "Place" voice command to anchor the element. There are additional commands for color input, angle orientation, and opacity for personalization.
   
 How to run:
+0) Start Local Dev Server
 1) Clone Repository
 2) Open index.html
 3) Showtime!
+
+How to use:
+0) Say Canvas ______
+  - Draw/Create/Whatever cuz NLP ya know + shape + transpareny etc to start drawing a object
+  - Delete to clear CanvasBoard
+  - Drop to place object on board
+  - Write --whatever-- to write text to board
 
 Some Technologies We Used:
 1) Microsoft Azure Cognitive Speech-to-Text
