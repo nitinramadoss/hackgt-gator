@@ -3,6 +3,19 @@ async function textNLP(text) {
     if (text == null || text == undefined || text == "") {
       return;
     }
+    if (text.includes('place')) {
+      let commandType = 'place';
+      let command = {'command': commandType};
+      return command;
+
+    }
+    if (text.includes('begin drawing') || text.includes('stop drawing')) {
+      let commandType = 'drawing';
+      commandType = text.includes('begin drawing') ? 'begin drawing' : 'stop drawing';
+      let command = {'command': commandType};
+      return command;
+    }
+
     var data;
     var REQ_URL = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/caefedaf-04c0-452f-97d2-6ef49d961261?q='
     var PARAMS = '&verbose=true'
@@ -27,28 +40,38 @@ async function textNLP(text) {
 }
 
 function chooseIntent(data, intent) {
-    var command = {'command': '', 'shape': '', 'opacity': '', 'angle': ''};
+    var command = {'command': '', 'shape': '', 'opacity': '', 'angle': '', 'color': ''};
     switch(intent) {
         case 'DrawSquare':
             command.command = 'draw';
             command.shape = 'square';
             command.opacity = 'transparent';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
             command.opacity = command.opacity.includes('50') ? '50' : command.opacity;
             return command;
             break;
-        case 'DrawCircle':
+        case 'DrawCicle':
             command.command = 'draw';
             command.shape = 'circle';
             command.opacity = 'transparent';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -59,9 +82,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'hexagon';
             command.opacity = 'transparent';
+            command.color = 'black'
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Opacity') {
                     command.opacity = data['entities'][i]['resolution']['values'][0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -72,9 +100,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'line';
             command.angle = '0';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Angle') {
                     command.angle = data['entities'][i]['entity'].split(' ')[0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
@@ -84,9 +117,14 @@ function chooseIntent(data, intent) {
             command.command = 'draw';
             command.shape = 'arrow';
             command.angle = '0';
+            command.color = 'black';
             for(let i = 0; i < data['entities'].length; i++) {
                 if(data['entities'][i]['type'] === 'Angle') {
                     command.angle = data['entities'][i]['entity'].split(' ')[0];
+                    break;
+                }
+                if(data['entities'][i]['type'] === 'Color') {
+                    command.color = data['entities'][i]['resolution']['values'][0];
                     break;
                 }
             }
