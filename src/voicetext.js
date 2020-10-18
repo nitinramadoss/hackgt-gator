@@ -10,12 +10,11 @@ var currentSpeech = '';
 var boardAction;
 var preventTimeoutCall = false;
 
-var boardActionStack = new Array();
-
-function checkRequestCanvas (text) {
-  console.log('In Check Request Canvas');
-  console.log('Checking values: ' + text + preventTimeoutCall);
-  if (text.includes('canvas') && !preventTimeoutCall) {
+function  checkRequestCanvas(text) {
+  console.log("In Check Request Canvas");
+  console.log("Checking values: " + text + preventTimeoutCall);
+  if (text.includes("canvas") && !preventTimeoutCall)
+  {
     console.log(text);
 
     if (text.includes('canvass')) {
