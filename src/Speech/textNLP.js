@@ -3,7 +3,12 @@ async function textNLP(text) {
     if (text == null || text == undefined || text == "") {
       return;
     }
+    if (text.includes('place')) {
+      let commandType = 'place';
+      let command = {'command': commandType};
+      return command;
 
+    }
     if (text.includes('begin drawing') || text.includes('stop drawing')) {
       let commandType = 'drawing';
       commandType = text.includes('begin drawing') ? 'begin drawing' : 'stop drawing';
