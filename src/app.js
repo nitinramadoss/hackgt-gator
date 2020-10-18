@@ -17,6 +17,7 @@ const context = canvas.getContext("2d");
 context.globalAlpha = 0.7;
 
 
+
 let latestOptions = {}
 let shapes = []
 let placed = false
@@ -118,12 +119,18 @@ async function runDetection() {
 
 function drawRectangle(options) {
     var coords = options.bbox;
+    context.globalAlpha = 0.7;
 
     var canvas = document.getElementById('canvas');
-    if (canvas.getContext) {
-      context.fillStyle = options.color  
-      context.globalAlpha = 0.5;
-      context.fillRect(coords[0], coords[1], coords[2], coords[3]);
+    if (canvas.getContext) {  
+       if (options.opacity === 'solid') { 
+          context.fillStyle = options.color;  
+          context.fillRect(coords[0], coords[1], coords[2], coords[3])
+       } else {
+         context.lineWidth = 10;
+         context.strokeStyle = options.color
+         context.strokeRect(coords[0], coords[1], coords[2], coords[3])
+       }
     }
 }
 
@@ -132,31 +139,38 @@ function drawText(options) {
     context.globalAlpha = 1;
 
     var text = options.text;
-    var ctx = document.getElementById('canvas').getContext('2d');
-    ctx.font = '48px serif';
+
+    context.font = '48px serif';
 
     if (text != undefined) {
-        ctx.fillText(text, coords[0], coords[1] + 0.5*coords[3]);
+        context.fillText(text, coords[0], coords[1] + 0.5*coords[3]);
     } else {
-        ctx.fillText("", coords[0], coords[1]);
+        context.fillText("", coords[0], coords[1]);
     }
 }
 
 function drawCircle(options) {
     let coords = options.bbox;
-    context.globalAlpha = 0.5;
+    context.globalAlpha = 0.7;
 
     if (canvas.getContext) {
         context.beginPath();
         context.arc(coords[0] + 0.5*coords[2], coords[1]+0.5*coords[3], coords[3] / 3, 0, 2 * Math.PI, false);
-        context.fillStyle = options.color;
-        context.fill();
+
+        if(options.opacity === 'solid') {
+          context.fillStyle = options.color;
+          context.fill();
+        } else {
+          context.lineWidth = 10;
+          context.strokeStyle = options.color
+          context.stroke();
+        }
     }
 }
 
 function drawArrow(options) {
     let coords = options.bbox;
-    context.globalAlpha = 0.5;
+    context.globalAlpha = 0.7;
 
     var headlen = 10; 
     var dx = coords[2];
