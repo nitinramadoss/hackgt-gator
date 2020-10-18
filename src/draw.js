@@ -6,6 +6,8 @@ function draw(options) {
         drawRectangle(options, context)
     } else if(options.type === 'text') {
         drawText(options, context)
+    } else if(options.type === 'circle') {
+        drawCircle(options, context)
     }
 }
 
@@ -26,7 +28,17 @@ function drawText(options, context) {
     } else {
         context.fillText("", coords[0], coords[1]);
     }
-  }
+}
+
+function drawCircle(options, context) {
+    let coords = options.bbox
+    if (canvas.getContext) {
+        context.beginPath();
+        context.arc(coords[0], coords[1] + 0.5*coords[3], 0.5*coords[2], 0, 2 * Math.PI, false);
+        context.fillStyle = 'green';
+        context.fill();
+    }
+}
  
 
 export default draw

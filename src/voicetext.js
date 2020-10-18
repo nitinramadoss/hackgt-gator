@@ -10,8 +10,6 @@ var currentSpeech = "";
 var boardAction; 
 var preventTimeoutCall = false;
 
-var boardActionStack=new Array();
-
 function  checkRequestCanvas(text) {
   console.log("In Check Request Canvas");
   console.log("Checking values: " + text + preventTimeoutCall);
@@ -23,7 +21,6 @@ function  checkRequestCanvas(text) {
     else
       boardAction = textNLP(text.split("canvas")[1]);
 
-    boardActionStack.push(boardAction);
     currentSpeech = "";
     preventTimeoutCall = false;
   }

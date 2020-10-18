@@ -1,4 +1,4 @@
-//import draw from './draw.js'
+import draw from './draw.js'
 
 const modelParams = {
     flipHorizontal: true,  
@@ -53,31 +53,44 @@ async function runDetection() {
         }
 
         if(predictions[0] !== undefined) {
-            const options = {
+            let action = await getAction();
+
+            options = {
                 bbox: predictions[0].bbox,
                 type: 'rectangle',
-                opacity: 'shaded',
+                angle: 0,
+                text: "",
+                opacity: 1,
             }
-
-            let action = await getAction();
-            console.log(action);
+            
             if (action.command == 'draw') {
                 var shape = action.shape;
 
-                if (shape == 'square') {
-                      currentCommand = "drawRectangle";
-                } else if (shape == 'hexagon')  {         
-                      currentCommand = "drawText";
-                }
-            }  
-
-            if (currentCommand == "drawRectangle") {
-              console.log(currentCommand);
-              drawRectangle(options);
-            } else if (currentCommand == "drawText") {
-              console.log(currentCommand);
-              drawText(options);  
+              if (shape == 'square') {
+                //options.opacity = action.opacity;  
+                currentCommand = "drawRectangle";
+              } else if (shape == 'circle')  {   
+                //options.opacity = parseInt(action.opacity);        
+                currentCommand = "drawCircle";
+              } else if (shape == 'arrow')  {         
+                currentCommand = "drawArrow";
+              } else if (shape == 'line')  {         
+                currentCommand = "drawLine";
+              }
+            } else if (action.command == 'write') {
+                options.text = action.text;
+                currentCommand = "drawWrite";
             }
+
+          if (currentCommand == "drawRectangle") {
+            drawRectangle(options);
+          } else if (currentCommand == "drawText") {
+            drawText(options);  
+          } else if (currentCommand == "drawCircle") {
+            drawCircle(options);  
+          } else if (currentCommand == "drawArrow") {
+            drawArrow(options);  
+          }
         }
     });
 }
@@ -87,6 +100,7 @@ function drawRectangle(options) {
 
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
+      context.globalAlpha = options.opacity;
       context.fillRect(coords[0], coords[1], coords[2], coords[3]);
     }
 }
@@ -103,7 +117,35 @@ function drawText(options) {
     } else {
         ctx.fillText("", coords[0], coords[1]);
     }
-  }
+}
+
+function drawCircle(options) {
+    let coords = options.bbox;
+
+    if (canvas.getContext) {
+        context.beginPath();
+        context.arc(coords[0], coords[1], 0.5*coords[2], 0, 2 * Math.PI, false);
+        context.fillStyle = 'green';
+        context.fill();
+    }
+}
+
+function drawArrow(options) {
+    let coords = options.bbox;
+
+    var headlen = 10; 
+    var dx = coords[2];
+    var dy = coords[3];
+    var angle = Math.atan2(dy, dx);
+    context.beginPath();
+    context.moveTo(coords[0], coords[1]);
+    context.lineTo(dx + coords[0], dy + coords[1]);
+    context.lineTo(dx + coords[0] - headlen * Math.cos(angle - Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle - Math.PI / 6));
+    context.moveTo(dx + coords[0], dy + coords[1]);
+    context.lineTo(dx + coords[0] - headlen * Math.cos(angle + Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle + Math.PI / 6));
+    context.lineWidth = 10;
+    context.stroke();
+}
  
 
 handTrack.load(modelParams).then(lmodel => {
