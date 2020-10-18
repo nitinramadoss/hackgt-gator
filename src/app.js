@@ -15,6 +15,7 @@ const canvas = document.getElementById("canvas");
 let trackButton = document.getElementById("trackbutton");
 const context = canvas.getContext("2d");
 
+
 let latestOptions = {}
 let shapes = []
 let placed = false
@@ -78,12 +79,10 @@ async function runDetection() {
                     currentCommand = "drawLine";
                   }
                   latestOptions = options
-                  
+
                   latestOptions.bbox = predictions[0].bbox
                   if (currentCommand == "drawRectangle") {
                     drawRectangle(latestOptions);
-                  } else if (currentCommand == "drawText") {
-                    drawText(latestOptions);  
                   } else if (currentCommand == "drawCircle") {
                     drawCircle(latestOptions);  
                   } else if (currentCommand == "drawArrow") {
@@ -96,8 +95,9 @@ async function runDetection() {
                     options.shape = 'text'
                     options.text = action.text;
                     options.bbox = predictions[0].bbox
-
-                    currentCommand = "drawWrite";
+                    
+                    latestOptions = options;
+                    drawText(options)
                     placed = false
                 } else if (action.command === 'place' && !placed) {
                     shapes.push(latestOptions)
@@ -118,15 +118,18 @@ function drawRectangle(options) {
 
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
-      context.globalAlpha = options.opacity;
+      context.globalAlpha = 0.5;
       context.fillRect(coords[0], coords[1], coords[2], coords[3]);
     }
 }
 
 function drawText(options) {
     var coords = options.bbox;
+    context.globalAlpha = 1;
 
-    var text = document.getElementById("inputBox").value;
+    console.log(options)
+    var text = options.text;
+    console.log(text)
     var ctx = document.getElementById('canvas').getContext('2d');
     ctx.font = '48px serif';
 
@@ -139,6 +142,7 @@ function drawText(options) {
 
 function drawCircle(options) {
     let coords = options.bbox;
+    context.globalAlpha = 0.5;
 
     if (canvas.getContext) {
         context.beginPath();
@@ -150,6 +154,7 @@ function drawCircle(options) {
 
 function drawArrow(options) {
     let coords = options.bbox;
+    context.globalAlpha = 0.5;
 
     var headlen = 10; 
     var dx = coords[2];
@@ -161,7 +166,7 @@ function drawArrow(options) {
     context.lineTo(dx + coords[0] - headlen * Math.cos(angle - Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle - Math.PI / 6));
     context.moveTo(dx + coords[0], dy + coords[1]);
     context.lineTo(dx + coords[0] - headlen * Math.cos(angle + Math.PI / 6), dy + coords[1] - headlen * Math.sin(angle + Math.PI / 6));
-    context.lineWidth = 10;
+    context.lineWidth = 5;
     context.stroke();
 }
  
