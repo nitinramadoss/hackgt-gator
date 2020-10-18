@@ -6,6 +6,9 @@ img {
 }
 video {
   display: none;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 .block {
     display: block;
@@ -14,7 +17,15 @@ video {
 .hidden {
     display: none;
 }
+.inner {
+    display: flex;
+    justify-content: center;
+}
 
+.videoCanvas {
+    margin-left: auto;
+    margin-right: auto;
+}
 .canvasbox {
     border-radius: 3px;
     margin-right: 10px;
@@ -30,11 +41,23 @@ video {
     width: 100%;
 }
 
+body {
+  background-color: #141414;
+}
+
+.videoArea {
+  height: 60%;
+  width: 100%;
+}
+
+
 .flexgrid{
   margin-left: auto;
   margin-right: auto;
   display:flex;
   flex-direction: column;
+  position: absolute;
+  bottom: 0px;
 }
 
 .flexrow{
