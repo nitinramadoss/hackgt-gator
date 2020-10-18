@@ -3,7 +3,7 @@ async function textNLP(text) {
     if (text == null || text == undefined || text == "") {
       return;
     }
-    if (text.includes('place')) {
+    if (text.includes('drop')) {
       let commandType = 'place';
       let command = {'command': commandType};
       console.log(command)

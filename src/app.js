@@ -103,7 +103,7 @@ async function runDetection() {
                     latestOptions = options;
                     drawText(options)
                     placed = false
-                } else if (action.command === 'place' && !placed) {
+                } else if ((action.command === 'place' || action.command === 'drop') && !placed) {
                     shapes.push(latestOptions)
                     console.log(shapes)
                     console.log(latestOptions.bbox)
