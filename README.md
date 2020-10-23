@@ -1,5 +1,7 @@
 # Canvas Board
 
+Video: https://youtu.be/TCdYTP8y7V0
+
 Goal: Reimaging virtual education, providing educators a virtual whiteboard to make teaching easier. This idea is an alternative for educators who screen share paint applications when drawing out concepts in classes such as physics, linear algebra, database modeling and more. With this convenient whiteboard, educators can optimize class time for teaching concepts instead of dealing with the inconveniences of drawing via their mouse while streaming to their class.
 
 Features:
